@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // *** PASTE YOUR AWS API GATEWAY URL HERE ***
-            const API_URL = 'https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/Prod/submit-order';
+            const API_URL = 'https://qrqvi09kx7.execute-api.us-east-1.amazonaws.com/Prod/submit-order';
 
             try {
                 // Firing the request to AWS (Removed 'no-cors' so API Gateway responds correctly)
