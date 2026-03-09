@@ -1,0 +1,452 @@
+:root {
+    --black: #0d0d0d;
+    --dark-grey: #1a1a1a;
+    --cream: #f4f1ea;
+    --yellow: #ffcc00;
+    --yellow-hover: #e6b800;
+    --border-color: #333333;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--cream); color: var(--cream);
+    font-family: 'Courier New', Courier, monospace;
+    /* display: flex; min-height: 100vh; */
+}
+
+.page-wrapper{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+.app-container { display: flex; flex: 1; width: 100%; }
+
+.sidebar {
+    width: 250px; background-color: var(--dark-grey);
+    border-right: 1px solid var(--border-color);
+    padding: 20px 0; display: flex; flex-direction: column;
+}
+
+.brand {
+    padding: 0 20px 20px; border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px; color: var(--yellow);
+}
+
+.brand a {
+    color: var(--yellow);
+    text-decoration: none;
+}
+
+.brand a:hover {
+    color: var(--yellow-hover);
+}
+
+.tab-list { list-style: none; }
+
+.tab {
+    padding: 15px 20px; cursor: pointer; transition: background 0.2s, color 0.2s;
+    color: var(--cream); border-left: 4px solid transparent;
+}
+.tab:hover { background-color: rgba(255, 204, 0, 0.1); }
+.tab.active {
+    background-color: rgba(255, 204, 0, 0.15); border-left: 4px solid var(--yellow);
+    color: var(--yellow); font-weight: bold;
+}
+
+.content { flex: 1; padding: 40px; overflow-y: auto; color: var(--black)}
+
+header {
+    border-bottom: 2px dashed var(--border-color);
+    padding-bottom: 20px; margin-bottom: 30px;
+}
+header p { color: var(--yellow); margin-top: 5px; font-weight: bold; }
+
+.menu-category { display: none; }
+.menu-category.active-category { display: block; }
+
+.food-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+
+.food-card {
+    background-color: var(--dark-grey); border: 2px solid var(--border-color);
+    border-radius: 8px; cursor: pointer; transition: transform 0.2s, border-color 0.2s;
+}
+.food-card:hover { transform: translateY(-5px); border-color: var(--yellow); }
+
+.food-image { height: 150px; background-color: #2a2a2a; border-radius: 8px 8px 0 0; }
+.food-info { padding: 15px; position: relative; }
+.food-info h3 { color: var(--yellow); margin-bottom: 5px; }
+.food-info p { font-size: 0.7em; color: #cccccc; margin-bottom: 15px;}
+.price-tag { 
+    background: var(--yellow); color: var(--black); 
+    padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold;
+}
+
+/* Slide Panel */
+.slide-panel {
+    position: fixed; top: 0; right: -400px; width: 400px; height: 100vh;
+    background-color: var(--dark-grey); box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    transition: right 0.3s ease; z-index: 1000; overflow-y: auto;
+}
+.slide-panel.open { right: 0; }
+
+.close-btn {
+    background: transparent; border: none; color: var(--cream);
+    font-size: 24px; cursor: pointer; position: absolute; top: 15px; right: 20px;
+}
+.close-btn:hover { color: var(--yellow); }
+
+.panel-content { padding: 40px 30px; }
+.selected-item-display {
+    background-color: var(--black); padding: 15px;
+    border-left: 4px solid var(--yellow); margin-bottom: 25px; margin-top: 10px;
+}
+.selected-item-display h3 { color: var(--yellow); }
+
+/* Form Elements & Addons */
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; color: var(--cream); }
+
+input[type="text"], input[type="tel"], input[type="number"], select {
+    width: 100%; padding: 12px; background-color: var(--black);
+    border: 1px solid var(--border-color); color: var(--cream);
+    border-radius: 4px; font-family: inherit;
+}
+input:focus, select:focus { outline: none; border-color: var(--yellow); }
+
+/* Addons Checkbox Styling */
+.addons-section {
+    background: var(--black); padding: 15px; border-radius: 4px; border: 1px solid var(--border-color);
+}
+.checkbox-label {
+    display: flex; align-items: center; cursor: pointer; margin-bottom: 10px; font-size: 0.9em; color: #ddd;
+}
+.checkbox-label input[type="checkbox"] {
+    width: auto; margin-right: 10px; accent-color: var(--yellow); transform: scale(1.2); cursor: pointer;
+}
+
+/* Payment Box & Total */
+.payment-instructions {
+    background-color: rgba(255, 204, 0, 0.1); border: 1px dashed var(--yellow);
+    padding: 15px; margin-bottom: 20px; border-radius: 4px;
+}
+.total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 1.2em; font-weight: bold; color: var(--yellow);
+}
+
+.submit-btn {
+    width: 100%; padding: 15px; background-color: var(--yellow);
+    color: var(--black); border: none; border-radius: 4px; font-size: 1.1em;
+    font-weight: bold; cursor: pointer; transition: background 0.3s; font-family: inherit;
+}
+.submit-btn:hover:not(:disabled) { background-color: var(--yellow-hover); }
+.submit-btn:disabled { background-color: #555; color: #888; cursor: not-allowed; }
+
+.overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.6); z-index: 999;
+}
+.overlay.active { display: block; }
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    /* Stack the sidebar and the main content vertically */
+    .app-container {
+        flex-direction: column; 
+    }
+    
+    /* Make the sidebar take up the full width instead of just 250px */
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 15px 20px;
+    }
+
+    /* Make the tabs display in a row on mobile so they don't take up too much vertical space */
+    .tab-list {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto; /* Allows scrolling if you add many tabs later */
+    }
+
+    .tab {
+        border-left: none;
+        border-bottom: 4px solid transparent;
+        white-space: nowrap;
+    }
+
+    .tab.active {
+        border-left: none;
+        border-bottom: 4px solid var(--yellow);
+    }
+
+    /* Reduce padding on the main content area for small screens */
+    .content {
+        padding: 20px;
+    }
+
+    /* Make the slide-out panel fill the screen on mobile */
+    .slide-panel {
+        width: 100%;
+        right: -100%;
+    }
+    
+    /* Slight adjustment to the grid so cards fit perfectly on very small phones */
+    .food-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+
+/* Index CSS Design */
+/* =========================================
+   HOMEPAGE SPECIFIC STYLING 
+   ========================================= */
+
+.home-body {
+    background-color: var(--cream);
+    color: var(--black);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.home-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.home-nav .brand h2 {
+    color: var(--black);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* Global Button Styles for Homepage */
+.primary-btn {
+    background-color: var(--yellow);
+    color: var(--black);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: var(--black);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid var(--black);
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-align: center;
+}
+
+.secondary-btn:hover {
+    background-color: var(--black);
+    color: var(--cream);
+}
+
+.nav-btn {
+    padding: 0.6rem 1.5rem;
+}
+
+/* Hero Section */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 4rem 5% 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.badge {
+    display: inline-block;
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #b38600;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.hero-text h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1.5px;
+    color: var(--black);
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    color: var(--dark-grey);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 90%;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.hero-btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Hero Visual (Image with offset background) */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    z-index: 2;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+}
+
+/* The Yellow offset box behind the image */
+.visual-backdrop {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 95%;
+    height: 100%;
+    background-color: var(--yellow);
+    border-radius: 16px;
+    z-index: 1;
+}
+
+/* How It Works Section */
+.how-it-works {
+    background-color: #fff;
+    padding: 6rem 5%;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.section-header p {
+    color: var(--black);
+    font-size: 1.1rem;
+}
+
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.step-card {
+    background-color: var(--cream);
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: transform 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+}
+
+.step-icon {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--yellow);
+    margin-bottom: 1.5rem;
+    line-height: 1;
+    opacity: 0.8;
+}
+
+.step-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.step-card p {
+    color: var(--dark-grey);
+    line-height: 1.6;
+}
+
+/* Footer */
+.home-footer {
+    background-color: var(--black);
+    color: var(--cream);
+    text-align: center;
+    padding: 2rem;
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 968px) {
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 2rem;
+    }
+    .hero-text p {
+        margin: 0 auto 2.5rem;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+    .visual-backdrop {
+        top: 15px;
+        left: 15px;
+    }
+}

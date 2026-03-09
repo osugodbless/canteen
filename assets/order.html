@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Canteen Pre-Order</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+
+        <div class="app-container">
+            <nav class="sidebar">
+                <div class="brand">
+                    <a href="index.html"><h2>The Canteen</h2></a>
+                </div>
+                <ul class="tab-list">
+                    <li class="tab active" data-target="rice-menu">Rice Dish</li>
+                    <li class="tab" data-target="coming-soon">Other meals (Coming Soon)</li>
+                </ul>
+            </nav>
+
+            <main class="content">
+                <header>
+                    <h1>Pre-Order for Tomorrow</h1>
+                    <div class="countdown-container" style="font-weight: bold; font-size: 0.8rem; color: var(--black);">
+                        <span>Ordering ends: 7:00 PM Daily --> Time left: </span>
+                        <span id="countdown-timer" style="color: red; padding: 5px 10px; border-radius: 4px; font-family: monospace; font-size: 1rem;">--h --m --s</span>
+                    </div>
+                    
+                </header>
+
+                <section id="rice-menu" class="menu-category active-category">
+    <div class="food-grid">
+        
+        <div class="food-card" onclick="openPanel('The Classic Combo', 'Jollof, Fried Rice, Plantain, Ponmo & Egg', 2000)">
+            <div class="food-image placeholder-img">
+                <img src="img/meal_rice.png" alt="Rice Combo" style="width:100%; height:100%; object-fit:cover; border-radius: 8px 8px 0 0;">
+            </div>
+            <div class="food-info">
+                <h3>Jollof & Fried Rice Combo</h3>
+                <p>A large portion of tasty naija jollof and fried Rice with plantain, ponmo & egg</p>
+                <span class="price-tag">₦2,000</span>
+            </div>
+        </div>
+
+        <div class="food-card" onclick="openPanel('The Classic Combo', 'Jollof, Fried Rice, Plantain, Ponmo & Egg', 2000)">
+            <div class="food-image placeholder-img">
+                <img src="img/meal_rice.png" alt="Rice Combo" style="width:100%; height:100%; object-fit:cover; border-radius: 8px 8px 0 0;">
+            </div>
+            <div class="food-info">
+                <h3>Jollof & Fried Rice Combo</h3>
+                <p>A large portion of tasty naija jollof and fried Rice with plantain, ponmo & egg</p>
+                <span class="price-tag">₦2,000</span>
+            </div>
+        </div>
+
+        <div class="food-card" onclick="openPanel('The Classic Combo', 'Jollof, Fried Rice, Plantain, Ponmo & Egg', 2000)">
+            <div class="food-image placeholder-img">
+                <img src="img/meal_rice.png" alt="Rice Combo" style="width:100%; height:100%; object-fit:cover; border-radius: 8px 8px 0 0;">
+            </div>
+            <div class="food-info">
+                <h3>Jollof & Fried Rice Combo</h3>
+                <p>A large portion of tasty naija jollof and fried Rice with plantain, ponmo & egg</p>
+                <span class="price-tag">₦2,000</span>
+            </div>
+        </div>
+
+    </div> <h3 style="margin-top: 30px;"><em>Other tasty combos coming soon...</em></h3>
+</section>
+
+                <section id="coming-soon" class="menu-category">
+                    <p style="color: #888;"><em>More varieties coming soon...</em></p>
+                </section>
+            </main>
+
+            <div id="slidePanel" class="slide-panel">
+                <button class="close-btn" onclick="closePanel()">✕</button>
+                <div class="panel-content">
+                    <h2>Complete Order</h2>
+                    <div class="selected-item-display">
+                        <h3 id="selectedItemName">Item Name</h3>
+                        <p id="selectedItemDesc">Description</p>
+                    </div>
+
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="customerName">Full Name</label>
+                            <input type="text" id="customerName" required placeholder="Enter full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required placeholder="080...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="floorNumber">Delivery Floor</label>
+                            <select id="floorNumber" required>
+                                <option value="" disabled selected>Select your floor</option>
+                                <option value="1">Floor 1</option>
+                                <option value="2">Floor 2</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group addons-section">
+                            <label>Add-ons (Optional)</label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="addon" value="Extra Protein (egg)" data-price="400"> 
+                                Extra Protein (egg) (+₦400)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="addon" value="Extra Plantain" data-price="300"> 
+                                Extra Plantain (+₦300)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="addon" value="Moi-Moi" data-price="500"> 
+                                Moi-Moi (+₦500)
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plates">Number of Plates</label>
+                            <input type="number" id="plates" min="1" max="10" value="1" required>
+                        </div>
+
+                        <div class="payment-instructions">
+                            <div class="total-row">
+                                <span>Total to Pay:</span>
+                                <span id="displayTotal">₦2,000</span>
+                            </div>
+                            <hr style="border: 0; border-top: 1px dashed var(--yellow); margin: 10px 0;">
+                            <p style="font-size: 0.9em; line-height: 1.4;">
+                                Bank: <strong>Moniepoint MFB</strong><br>
+                                Account: <strong>8124940975</strong><br>
+                                Name: <strong>Bolaji Adigun Jimoh</strong>
+                            </p>
+                            <small style="display: block; margin-top: 8px; color: #ccc;">* Please transfer exact total before submitting. We verify all payments.</small>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Confirm & Submit Order</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="panelOverlay" class="overlay" onclick="closePanel()"></div>
+        </div>
+    </div>
+
+    <footer class="home-footer">
+        <p>Built by engineers, for engineers.</p>
+    </footer>
+
+<script src="app.js"></script>
+</body>
+</html>
