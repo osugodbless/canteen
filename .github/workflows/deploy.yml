@@ -47,7 +47,7 @@ jobs:
             --stack-name canteen-stack \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
-            --parameter-overrides GoogleAppsScriptUrl=${{ secrets.APPS_SCRIPT_URL }} \
+            --parameter-overrides "GoogleAppsScriptUrl=${{ secrets.APPS_SCRIPT_URL }}" \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset
 
