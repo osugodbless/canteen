@@ -175,6 +175,8 @@ Resources:
           Properties:
             Queue: !GetAtt OrderQueue.Arn
             BatchSize: 10
+    Metadata:
+      BuildMethod: go1.x
 
 Outputs:
   WebsiteURL:
