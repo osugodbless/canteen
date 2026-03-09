@@ -139,10 +139,42 @@ Resources:
           version: '1.0'
         paths:
           /submit-order:
+            # 1. THE PREFLIGHT CHECK (OPTIONS)
+            options:
+              responses:
+                "200":
+                  description: "CORS preflight OK"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: string
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: string
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: string
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+            
+            # 2. THE ACTUAL ORDER (POST)
             post:
               responses:
                 "200":
                   description: "Order safely queued"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: string
               x-amazon-apigateway-integration:
                 type: aws
                 credentials: !GetAtt ApiGatewayToSQSRole.Arn
@@ -155,6 +187,12 @@ Resources:
                 responses:
                   default:
                     statusCode: "200"
+                    responseParameters:
+                      # This is the magic line that stops the browser from panicking
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                    responseTemplates:
+                      # Converts the raw SQS XML into clean JSON for your app.js
+                      application/json: "{\"status\": \"success\", \"message\": \"Order accepted!\"}"
 
   # ==========================================
   # 4. COMPUTE: Go Lambda Function
