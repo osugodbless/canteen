@@ -41,11 +41,17 @@ jobs:
       - name: Build SAM Template
         run: sam build
 
+      - name: Create Artifact Bucket (Bypass SAM Bug)
+        run: |
+          # Creates a globally unique bucket using your specific AWS Account ID
+          aws s3 mb s3://canteen-sam-artifacts-544271161073-${{ env.AWS_REGION }} || true
+
       - name: Deploy SAM Template
         run: |
           sam deploy \
             --stack-name canteen-stack \
-            --resolve-s3 \
+            --s3-bucket canteen-sam-artifacts-544271161073-${{ env.AWS_REGION }} \
+            --region ${{ env.AWS_REGION }} \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides "GoogleAppsScriptUrl=${{ secrets.APPS_SCRIPT_URL }}" \
             --no-confirm-changeset \
