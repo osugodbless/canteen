@@ -1,0 +1,71 @@
+name: Deploy Canteen Architecture
+
+on:
+  push:
+    branches:
+      - main # It is best practice to only deploy infrastructure from the main branch
+
+env:
+  AWS_REGION: "us-east-1"
+
+# Required for OIDC to request the JWT token from GitHub
+permissions:
+  id-token: write   
+  contents: read    
+
+jobs:
+  DeployCanteenSystem:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      # --- 1. SECURE AWS AUTHENTICATION (OIDC) ---
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::544271161073:role/github-actions-deploy-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      # --- 2. BUILD THE GO BACKEND ---
+      - name: Set up Go 1.25
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25.4' 
+
+      - name: Build Go Binary
+        working-directory: ./backend
+        run: |
+          GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap main.go
+
+      # --- 3. DEPLOY INFRASTRUCTURE WITH SAM ---
+      - name: Setup AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+
+      - name: Build SAM Template
+        run: sam build
+
+      - name: Deploy SAM Template
+        run: |
+          sam deploy \
+            --stack-name canteen-stack \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides GoogleAppsScriptUrl=${{ secrets.APPS_SCRIPT_URL }} \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset
+
+      # --- 4. DEPLOY FRONTEND & CLEAR CACHE ---
+      - name: Sync Frontend to S3
+        run: |
+          # Dynamically fetch the S3 bucket name created by the SAM template
+          BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name canteen-stack --query "Stacks[0].Outputs[?OutputKey=='S3BucketName'].OutputValue" --output text)
+          
+          # Sync the frontend files (Change './frontend' to './assets' if that is your folder name)
+          aws s3 sync ./assets s3://$BUCKET_NAME --delete
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          # Dynamically fetch the CloudFront Distribution ID to push the new frontend to users
+          DIST_ID=$(aws cloudformation describe-stacks --stack-name canteen-stack --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
+          aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
