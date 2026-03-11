@@ -17,14 +17,15 @@ import (
 
 // OrderPayload exactly matches the JSON sent from your frontend app.js
 type OrderPayload struct {
-	Item      string   `json:"item"`
-	Name      string   `json:"name"`
-	Phone     string   `json:"phone"`
-	Floor     int      `json:"floor"`
-	Plates    int      `json:"plates"`
-	Extras    []string `json:"extras"`
-	Total     int      `json:"total"` // Assuming you added the calculated total to the payload
-	Timestamp string   `json:"timestamp"`
+	Item       string   `json:"item"`
+	Name       string   `json:"name"`
+	Phone      string   `json:"phone"`
+	Floor      int      `json:"floor"`
+	Plates     int      `json:"plates"`
+	Extras     []string `json:"extras"`
+	PaymentRef string   `json:"paymentRef"`
+	Total      int      `json:"total"`
+	Timestamp  string   `json:"timestamp"`
 }
 
 // HandleSQSEvent is the main entry point for the Lambda function
@@ -73,14 +74,15 @@ func WriteToGoogleSheet(order OrderPayload) error {
 
 	// 3. Create a flat map to send to Apps Script
 	payload := map[string]interface{}{
-		"timestamp": order.Timestamp,
-		"name":      order.Name,
-		"phone":     order.Phone,
-		"floor":     order.Floor,
-		"item":      order.Item,
-		"extras":    extrasString,
-		"plates":    order.Plates,
-		"total":     order.Total,
+		"timestamp":  order.Timestamp,
+		"name":       order.Name,
+		"phone":      order.Phone,
+		"floor":      order.Floor,
+		"item":       order.Item,
+		"extras":     extrasString,
+		"plates":     order.Plates,
+		"paymentRef": order.PaymentRef,
+		"total":      order.Total,
 	}
 
 	// 4. Convert the map to JSON bytes

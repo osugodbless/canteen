@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: document.getElementById('phone').value,
                 floor: parseInt(document.getElementById('floorNumber').value),
                 plates: parseInt(document.getElementById('plates').value),
+                paymentRef: document.getElementById('paymentRef').value,
                 total: currentTotal,
                 timestamp: new Date().toISOString()
             };
@@ -127,13 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Inject your beautifully styled success UI
                 const addonsDisplay = checkedExtras.length > 0 ? checkedExtras.join(', ') : "None";
                 document.querySelector('.panel-content').innerHTML = `
-                    <h2 style="color: var(--yellow);">> Order Logged!</h2>
+                    <h2 style="color: var(--yellow);">> Order Recieved!</h2>
                     <p style="margin-top: 15px;">We've received your order for ${orderPayload.plates}x ${orderPayload.item}.</p>
                     <p style="margin-top: 5px; color: #ccc;">Add-ons: ${addonsDisplay}</p>
                     <div style="background: var(--black); border-left: 4px solid var(--yellow); padding: 15px; margin-top: 15px;">
-                        Total Expected Transfer: <strong>₦${orderPayload.total.toLocaleString()}</strong>
+                        Payment Claim: <strong>${orderPayload.paymentRef}</strong><br><br>
+                        Amount: <strong>₦${orderPayload.total.toLocaleString()}</strong>
                     </div>
-                    <p style="margin-top: 15px;">Delivery to Floor ${orderPayload.floor} tomorrow.</p>
+                    <p style="margin-top: 15px;">Your order will be processed as soon as the transfer is confirmed by our team. Delivery to Floor ${orderPayload.floor} tomorrow.</p>
                     <button class="submit-btn" style="margin-top: 30px;" onclick="location.reload()">Return to Menu</button>
                 `;
 
