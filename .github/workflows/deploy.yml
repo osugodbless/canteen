@@ -1,9 +1,9 @@
-name: Deploy Canteen Architecture
+# name: Deploy Canteen Architecture
 
-on:
-  push:
-    branches:
-      - main # It is best practice to only deploy infrastructure from the main branch
+# on:
+#   push:
+#     branches:
+#       - main # It is best practice to only deploy infrastructure from the main branch
 
 env:
   AWS_REGION: "us-east-1"
